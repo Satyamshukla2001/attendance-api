@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fa">
+    <title>Attendance — Team dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="Daymark home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+          <span>daymark<span class="brand-dot">.</span></span>
+        </a>
+        <div class="workspace-label">WORKSPACE</div>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a class="nav-link active" href="#overview"><span class="nav-icon">◫</span> Overview</a>
+          <a class="nav-link" href="#attendance"><span class="nav-icon">▤</span> Attendance</a>
+          <a class="nav-link" href="#team"><span class="nav-icon">♧</span> Team</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="help-card">
+            <span class="help-icon">✳</span>
+            <strong>Need a hand?</strong>
+            <p>Your attendance workspace, at a glance.</p>
+          </div>
+          <div class="profile">
+            <div class="avatar">AD</div>
+            <div><strong>Administrator</strong><span>Workspace admin</span></div>
+            <span class="profile-more">···</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumbs"><span>Workspace</span><span class="crumb-sep">/</span><strong>Overview</strong></div>
+          <div class="topbar-actions">
+            <span class="live-status"><span class="live-dot"></span> Live data</span>
+            <button class="icon-button" id="refresh-button" aria-label="Refresh dashboard" title="Refresh dashboard">↻</button>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <section class="welcome-row" id="overview">
+            <div>
+              <p class="eyebrow" id="today-label">TEAM WORKSPACE</p>
+              <h1>Good day<span class="heading-period">.</span></h1>
+              <p class="subheading">Here’s what’s happening with your team today.</p>
+            </div>
+            <div class="month-picker">
+              <label for="month-filter">REPORTING PERIOD</label>
+              <input id="month-filter" type="month">
+            </div>
+          </section>
+
+          <div id="notice" class="notice" role="status" hidden></div>
+
+          <section class="stats-grid" aria-label="Monthly statistics">
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">TEAM MEMBERS</span><span class="stat-icon mint">♧</span></div>
+              <div class="stat-value" id="employee-count">—</div>
+              <div class="stat-foot"><span class="stat-note">Active in this period</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">HOURS LOGGED</span><span class="stat-icon lavender">◷</span></div>
+              <div class="stat-value" id="hours-total">—</div>
+              <div class="stat-foot"><span class="stat-note">Across all team members</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">DAYS PRESENT</span><span class="stat-icon yellow">▣</span></div>
+              <div class="stat-value" id="days-total">—</div>
+              <div class="stat-foot"><span class="stat-note">Combined team attendance</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">LATE DAYS</span><span class="stat-icon rose">↗</span></div>
+              <div class="stat-value" id="late-total">—</div>
+              <div class="stat-foot"><span class="stat-note">Arrivals after scheduled start</span></div>
+            </article>
+          </section>
+
+          <section class="action-panel" aria-labelledby="quick-action-title">
+            <div class="action-copy">
+              <span class="action-badge">QUICK ACTION</span>
+              <h2 id="quick-action-title">Keep the day moving.</h2>
+              <p>Select a team member to record their attendance.</p>
+            </div>
+            <form id="punch-form" class="punch-form">
+              <label class="sr-only" for="employee-select">Team member</label>
+              <select id="employee-select" required>
+                <option value="">Loading team…</option>
+              </select>
+              <button class="button button-dark" id="punch-in-button" type="button" disabled>
+                <span>↗</span> Punch in
+              </button>
+              <button class="button button-light" id="punch-out-button" type="button" disabled>
+                Punch out <span>↙</span>
+              </button>
+            </form>
+            <div class="shift-status" id="shift-status" aria-live="polite">Choose a team member to see their shift status.</div>
+          </section>
+
+          <section class="content-grid">
+            <article class="panel attendance-panel" id="attendance">
+              <div class="panel-heading">
+                <div><p class="eyebrow">THE LATEST</p><h2>Recent attendance</h2></div>
+                <div class="table-filter">
+                  <label class="sr-only" for="attendance-filter">Filter by team member</label>
+                  <select id="attendance-filter"><option value="">Everyone</option></select>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>TEAM MEMBER</th><th>DATE</th><th>TIME IN</th><th>TIME OUT</th><th>HOURS</th><th>STATUS</th></tr></thead>
+                  <tbody id="attendance-rows"><tr><td class="empty-cell" colspan="6">Loading attendance…</td></tr></tbody>
+                </table>
+              </div>
+              <div class="panel-footer"><span id="attendance-count">Showing recent shifts</span><a href="#attendance" id="clear-filter">View latest <span>↗</span></a></div>
+            </article>
+
+            <article class="panel team-panel" id="team">
+              <div class="panel-heading">
+                <div><p class="eyebrow">TEAM OVERVIEW</p><h2>Monthly summary</h2></div>
+                <span class="period-pill" id="summary-period">This month</span>
+              </div>
+              <div id="team-summary" class="team-summary">
+                <div class="summary-loading">Loading team summary…</div>
+              </div>
+              <div class="panel-footer"><span id="team-count">Team performance</span><span class="footer-muted">IST</span></div>
+            </article>
+          </section>
+          <footer class="page-footer"><span>DAYMARK <span class="brand-dot">●</span></span><span>Attendance, made clear.</span></footer>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
